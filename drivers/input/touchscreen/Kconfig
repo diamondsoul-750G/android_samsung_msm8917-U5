@@ -1534,4 +1534,5 @@ config TOUCHSCREEN_TID_GESTURE_SUPPORT
 	  
 	  
 
+source "drivers/input/touchscreen/sec_incell_ts/Kconfig"
 endif
