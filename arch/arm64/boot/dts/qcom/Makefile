@@ -191,8 +191,7 @@ ifeq ($(CONFIG_BUILD_ARM64_DT_OVERLAY),y)
 		sxr1130-usbc-external-codec-pm660a-mtp-overlay.dtbo \
 		sxr1130-usbc-mtp-overlay.dtbo \
 		sxr1130-usbc-pm660a-mtp-overlay.dtbo \
-		sxr1130-qrd-overlay.dtbo \
-		sxr1130-svr-overlay.dtbo
+		sxr1130-qrd-overlay.dtbo
 
 sdm670-cdp-overlay.dtbo-base := sdm670.dtb
 sdm670-mtp-overlay.dtbo-base := sdm670.dtb
@@ -267,7 +266,6 @@ sxr1130-usbc-external-codec-pm660a-mtp-overlay.dtbo-base := sxr1130.dtb
 sxr1130-usbc-mtp-overlay.dtbo-base := sxr1130.dtb
 sxr1130-usbc-pm660a-mtp-overlay.dtbo-base := sxr1130.dtb
 sxr1130-qrd-overlay.dtbo-base := sxr1130.dtb
-sxr1130-svr-overlay.dtbo-base := sxr1130.dtb
 
 else
 dtb-$(CONFIG_ARCH_SDM670) += sdm670-rumi.dtb \
@@ -339,8 +337,7 @@ dtb-$(CONFIG_ARCH_SDM670) += sdm670-rumi.dtb \
 	sxr1130-usbc-external-codec-pm660a-mtp.dtb \
 	sxr1130-usbc-mtp.dtb \
 	sxr1130-usbc-pm660a-mtp.dtb \
-	sxr1130-qrd.dtb \
-	sxr1130-svr.dtb
+	sxr1130-qrd.dtb
 endif
 
 ifeq ($(CONFIG_BUILD_ARM64_DT_OVERLAY),y)
@@ -472,6 +469,7 @@ msm8953-ext-codec-mtp-overlay.dtbo-base := msm8953.dtb \
 msm8953-ext-codec-rcm-overlay.dtbo-base := msm8953.dtb \
 	apq8053.dtb
 msm8953-cdp-1200p-overlay.dtbo-base := msm8953.dtb
+
 sdm450-cdp-s2-overlay.dtbo-base := sdm450-pmi632.dtb \
 	sdm632.dtb \
 	sdm632-pm8004.dtb \
@@ -484,6 +482,7 @@ sdm450-mtp-s3-overlay.dtbo-base := sdm450-pmi632.dtb \
 sdm450-qrd-sku4-overlay.dtbo-base := sdm450-pmi632.dtb \
 	sdm632.dtb \
 	sdm632-pm8004.dtb
+
 sdm632-rumi-overlay.dtbo-base := sdm632.dtb
 sdm632-ext-codec-cdp-s3-overlay.dtbo-base := sdm632.dtb \
 	sdm632-pm8004.dtb
@@ -513,12 +512,15 @@ sdm429-cdp-overlay.dtbo-base := sdm429.dtb \
 	msm8937-interposer-sdm429.dtb
 sdm429-qrd-overlay.dtbo-base := sdm429.dtb \
 	msm8937-interposer-sdm429.dtb
-#bug426840,wuyuexiu,add,2019/1/31,project bringup,add support for sda on 1/31
-sdm429-mtp-P81081-overlay.dtbo-base := sdm429.dtb \
-      sda429.dtb
-
-sdm450-pmi632-mtp-s3-S86117AA1.dtbo-base := sdm450-pmi632.dtb \
-	sda450-pmi632.dtb
+sdm429-spyro-qrd-evt-overlay.dtbo-base := sdm429-spyro.dtb
+sdm429-spyro-qrd-dvt-overlay.dtbo-base := sdm429-spyro-dvt.dtb
+sdm429-spyro-qrd-wdp-overlay.dtbo-base := sdm429-spyro-wdp.dtb
+sdm429-bg-wtp-overlay.dtbo-base := sdm429-bg-wtp.dtb
+sda429-bg-wtp-overlay.dtbo-base := sda429-bg-wtp.dtb
+sdm429-bg-dvt2-wtp-overlay.dtbo-base := sdm429-bg-dvt2-wtp.dtb
+sda429-bg-dvt2-wtp-overlay.dtbo-base := sda429-bg-dvt2-wtp.dtb
+sdm429-bg-wdp-overlay.dtbo-base := sdm429-bg-wdp.dtb
+sda429-bg-wdp-overlay.dtbo-base := sda429-bg-wdp.dtb
 else
 dtb-$(CONFIG_ARCH_MSM8953) += msm8953-cdp.dtb \
 	msm8953-mtp.dtb \
@@ -552,7 +554,8 @@ dtb-$(CONFIG_ARCH_MSM8953) += msm8953-cdp.dtb \
 	msm8953-pmi8940-ext-codec-mtp.dtb \
 	msm8953-pmi8937-ext-codec-mtp.dtb \
 	msm8953-pmi632-cdp-s2.dtb \
-	apq8053-batcam.dtb
+	apq8053-batcam.dtb \
+	msm8953-no-pmi.dtb
 
 dtb-$(CONFIG_ARCH_MSM8937) += msm8937-pmi8950-mtp.dtb \
 	msm8937-interposer-sdm439-cdp.dtb \
@@ -620,7 +623,8 @@ dtb-$(CONFIG_ARCH_SDM450) += sdm450-rcm.dtb \
 	sdm450-pmi632-cdp-s2.dtb \
 	sdm450-pmi632-mtp-s3.dtb \
 	sda450-pmi632-cdp-s2.dtb \
-	sda450-pmi632-mtp-s3.dtb
+	sda450-pmi632-mtp-s3.dtb \
+        sdm450-no-pmi-mtp.dtb
 
 dtb-$(CONFIG_ARCH_SDM632) += sdm632-rumi.dtb \
 	sdm632-cdp-s2.dtb \
@@ -649,6 +653,15 @@ dtb-$(CONFIG_ARCH_SDM439) += sdm439-mtp.dtb \
 	qcm2150-qrd.dtb \
 	qm215-qrd-smb1360.dtb
 
+dtb-$(CONFIG_ARCH_SDM429) += sdm429-mtp.dtb \
+	sdm429-cdp.dtb \
+	sdm429-qrd.dtb \
+	sda429-mtp.dtb \
+	sda429-cdp.dtb \
+	sdm429-spyro.dtb \
+	sdm429-spyro-dvt.dtb \
+	sdm429-spyro-wdp.dtb \
+	sdw3300-bg-1gb-wtp.dtb
 #bug426840,wuyuexiu.wt,delete,2019/1/16,project bringup
 dtb-$(CONFIG_ARCH_SDM429) += sdm429-mtp.dtb
 
@@ -658,4 +671,5 @@ dtb-$(CONFIG_ARCH_SDM845_VM) += sdm845-vm.dtb
 
 always		:= $(dtb-y)
 subdir-y	:= $(dts-dirs)
+clean-files	:= *.dtb *.reverse.dts *.dtbo
 clean-files	:= *.dtb *.reverse.dts *.dtbo
