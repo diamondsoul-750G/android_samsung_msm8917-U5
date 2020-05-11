@@ -131,6 +131,7 @@ enum {
 	MDSS_PANEL_BLANK_BLANK = 0,
 	MDSS_PANEL_BLANK_UNBLANK,
 	MDSS_PANEL_BLANK_LOW_POWER,
+	MDSS_PANEL_BLANK_READY_TO_UNBLANK,
 };
 
 enum {
@@ -288,7 +289,16 @@ enum mdss_intf_events {
 	MDSS_EVENT_DSI_RESET_WRITE_PTR,
 	MDSS_EVENT_PANEL_TIMING_SWITCH,
 	MDSS_EVENT_UPDATE_PARAMS,
+#if defined(CONFIG_FB_MSM_MDSS_SAMSUNG)
+	MDSS_SAMSUNG_EVENT_START,
+	MDSS_SAMSUNG_EVENT_FRAME_UPDATE,
+	MDSS_SAMSUNG_EVENT_FB_EVENT_CALLBACK,
+	MDSS_SAMSUNG_EVENT_PANEL_ESD_RECOVERY,
+	MDSS_SAMSUNG_EVENT_MULTI_RESOLUTION,
+	MDSS_SAMSUNG_EVENT_MAX,
+#endif
 	MDSS_EVENT_MAX,
+	MDSS_EVENT_UPDATE_LIVEDISPLAY,
 };
 
 struct lcd_panel_info {
@@ -615,6 +625,8 @@ struct mdss_mdp_pp_tear_check {
 	u32 refx100;
 };
 
+struct mdss_livedisplay_ctx;
+
 struct mdss_panel_roi_alignment {
 	u32 xstart_pix_align;
 	u32 width_pix_align;
@@ -708,7 +720,6 @@ struct mdss_panel_info {
 	u32 partial_update_roi_merge;
 	struct ion_handle *splash_ihdl;
 	int panel_power_state;
-	int blank_state;
 	int compression_mode;
 
 	uint32_t panel_dead;
@@ -780,6 +791,8 @@ struct mdss_panel_info {
 	 */
 	u32 adjust_timer_delay_ms;
 
+	struct mdss_livedisplay_ctx *livedisplay;
+
 	/* debugfs structure for the panel */
 	struct mdss_panel_debugfs_info *debugfs_info;
 
@@ -794,10 +807,10 @@ struct mdss_panel_info {
 
 	/* HDR properties of display panel*/
 	struct mdss_panel_hdr_properties hdr_properties;
-	//+bug 600732, wangcong.wt, add, 2020/11/11, Add Lcd backlight map
-	int blmap_size;
-	int *blmap;
-	//+bug 600732, wangcong.wt, add, 2020/11/11, Add Lcd backlight map
+#if defined(CONFIG_FB_MSM_MDSS_SAMSUNG)
+	int panel_state;
+	int blank_state;
+#endif
 };
 
 struct mdss_panel_timing {
@@ -867,6 +880,9 @@ struct mdss_panel_data {
 	int panel_te_gpio;
 	int panel_en_gpio;
 	struct completion te_done;
+#if defined(CONFIG_FB_MSM_MDSS_SAMSUNG)
+	void *panel_private;
+#endif
 };
 
 struct mdss_panel_debugfs_info {

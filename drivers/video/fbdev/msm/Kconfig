@@ -161,4 +161,5 @@ config FB_MSM_MDSS_32BIT
         help
           Mdss config signature for 32bit Platform
 
+source "drivers/video/fbdev/msm/samsung/Kconfig"
 endif

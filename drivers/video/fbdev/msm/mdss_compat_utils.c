@@ -870,19 +870,43 @@ static int __from_user_pcc_coeff_v17(
 {
 	struct mdp_pcc_data_v1_7_32 pcc_cfg_payload32;
 	struct mdp_pcc_data_v1_7 pcc_cfg_payload;
-//+bug603960,sheqihao.wt,add,2020/11/26,add the 32BIT Color in kernel to compatiable SS framework 
-#if defined(CONFIG_FB_MSM_MDSS_32BIT)
+
+#if 0 //plan_b
+	if(sizeof(struct mdp_pcc_coeff_v1_7_32) == sizeof(struct mdp_pcc_coeff_v1_7))
+	{
+		u32 payload32;
+		u64 payload;
+
+		if (copy_from_user(&payload32, &pcc_cfg32->cfg_payload, sizeof(u32))){
+			pr_err("failed to read payload32 val for pcc from user1\n");
+			return -EFAULT;
+		}
+
+		if (copy_from_user(&payload, &pcc_cfg->cfg_payload, sizeof(u64))){
+			pr_err("failed to read payload val for pcc from user1\n");
+			return -EFAULT;
+		}
+
+		if(copy_in_user((void __user*)(&payload), (void __user*)(u64)payload32, sizeof(struct mdp_pcc_coeff_v1_7))){
+			pr_err("failed to copy payload for pcc from user\n");
+			return -EFAULT;
+		}
+	}
+ else
+#endif
+{
+#if defined(CONFIG_FB_MSM_MDSS_SAMSUNG)
 	u32 payload32;
 	u64 payload;
- 
+
 	if (copy_from_user(&payload32, &pcc_cfg32->cfg_payload, sizeof(u32))){
 		pr_err("failed to copy payload for pcc from user1\n");
 		return -EFAULT;
 	}
 
 	if (copy_from_user(&pcc_cfg_payload32,
-		compat_ptr(payload32),
-		sizeof(struct mdp_pcc_data_v1_7_32))){
+						compat_ptr(payload32),
+			sizeof(struct mdp_pcc_data_v1_7_32))){
 		pr_err("failed to copy payload for pcc from user\n");
 		return -EFAULT;
 	}
@@ -922,13 +946,13 @@ static int __from_user_pcc_coeff_v17(
 	pcc_cfg_payload.b.rb = pcc_cfg_payload32.b.rb;
 	pcc_cfg_payload.b.rg = pcc_cfg_payload32.b.rg;
 	pcc_cfg_payload.b.rgb = pcc_cfg_payload32.b.rgb;
-//+bug603960,sheqihao.wt,add,2020/11/26,add the 32BIT Color in kernel to compatiable SS framework 
-#if defined(CONFIG_FB_MSM_MDSS_32BIT)
+
+#if defined(CONFIG_FB_MSM_MDSS_SAMSUNG)
 	if (copy_from_user(&payload, &pcc_cfg->cfg_payload, sizeof(u64))){
 			pr_err("failed to copy payload for pcc from user1\n");
 			return -EFAULT;
 	}
- 
+
 	if (copy_to_user((void __user *)payload, &pcc_cfg_payload,
 			 sizeof(struct mdp_pcc_data_v1_7))) {
 		pr_err("failed to copy payload for pcc to user\n");
@@ -997,16 +1021,36 @@ static int __to_user_pcc_coeff_v1_7(
 {
 	struct mdp_pcc_data_v1_7_32 pcc_cfg_payload32;
 	struct mdp_pcc_data_v1_7 pcc_cfg_payload;
-//+bug603960,sheqihao.wt,add,2020/11/26,add the 32BIT Color in kernel to compatiable SS framework 
-#if defined(CONFIG_FB_MSM_MDSS_32BIT)
+
+#if 0//plan_b
+if(sizeof(struct mdp_pcc_coeff_v1_7_32) == sizeof(struct mdp_pcc_coeff_v1_7))
+{
+	 u32 payload32;
+	 u64 payload;
+
+	 if (copy_from_user(&payload32, &pcc_cfg32->cfg_payload, sizeof(u32))){
+	  pr_err("failed to read payload32 val for pcc from user1\n");
+	  return -EFAULT;
+	 }
+
+	 if (copy_from_user(&payload, &pcc_cfg->cfg_payload, sizeof(u64))){
+	   pr_err("failed to read payload val for pcc from user1\n");
+	   return -EFAULT;
+	 }
+
+	 if(copy_in_user((void __user*)(u64)payload32, (void __user*)payload, sizeof(struct mdp_pcc_coeff_v1_7))){
+	  pr_err("failed to copy payload for pcc from user\n");
+	  return -EFAULT;
+	 }
+}
+else
+#endif
+{
 	u32 payload32;
 	u64 payload;
-#endif
-//-bug603960,sheqihao.wt,add,2020/11/26,add the 32BIT Color in kernel to compatiable SS framework 
 
 	memset(&pcc_cfg_payload32, 0, sizeof(pcc_cfg_payload32));
-//+bug603960,sheqihao.wt,add,2020/11/26,add the 32BIT Color in kernel to compatiable SS framework 
-#if defined(CONFIG_FB_MSM_MDSS_32BIT)
+#if defined(CONFIG_FB_MSM_MDSS_SAMSUNG)
 	if (copy_from_user(&payload, &pcc_cfg->cfg_payload, sizeof(u64))){
 			pr_err("failed to copy payload for pcc from user1\n");
 			return -EFAULT;
@@ -1053,13 +1097,13 @@ static int __to_user_pcc_coeff_v1_7(
 	pcc_cfg_payload32.b.rb = pcc_cfg_payload.b.rb;
 	pcc_cfg_payload32.b.rg = pcc_cfg_payload.b.rg;
 	pcc_cfg_payload32.b.rgb = pcc_cfg_payload.b.rgb;
-//+bug603960,sheqihao.wt,add,2020/11/26,add the 32BIT Color in kernel to compatiable SS framework 
-#if defined(CONFIG_FB_MSM_MDSS_32BIT)
+
+#if defined(CONFIG_FB_MSM_MDSS_SAMSUNG)
 	if (copy_from_user(&payload32, &pcc_cfg32->cfg_payload, sizeof(u32))){
 		pr_err("failed to copy payload for pcc from user1\n");
 		return -EFAULT;
 	}
- 
+
 	if (copy_to_user(compat_ptr(payload32), &pcc_cfg_payload32,
 			 sizeof(struct mdp_pcc_data_v1_7_32))) {
 		pr_err("failed to copy payload for pcc to user\n");
@@ -2618,13 +2662,11 @@ static int __from_user_ad_init(
 	    copy_in_user(&ad_init->alpha_base,
 			&ad_init32->alpha_base,
 			sizeof(uint32_t)) ||
-//+bug603960,sheqihao.wt,add,2020/11/26,add the 32BIT Color in kernel to compatiable SS framework 
-#if defined(CONFIG_FB_MSM_MDSS_32BIT)
+#if defined(CONFIG_FB_MSM_MDSS_SAMSUNG)
 	    copy_in_user(&ad_init->al_thresh,
 			&ad_init32->al_thresh,
-			sizeof(uint32_t)) ||
+			sizeof(uint32_t)) ||			
 #endif
-//-bug603960,sheqihao.wt,add,2020/11/26,add the 32BIT Color in kernel to compatiable SS framework 
 	    copy_in_user(&ad_init->bl_lin_len,
 			&ad_init32->bl_lin_len,
 			sizeof(uint32_t)) ||

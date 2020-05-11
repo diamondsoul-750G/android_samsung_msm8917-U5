@@ -308,8 +308,7 @@ struct mdp_qseed_cfg_data32 {
 	uint32_t block;
 	struct mdp_qseed_cfg32 qseed_data;
 };
-//+bug603960,sheqihao.wt,add,2020/11/26,add the 32BIT Color in kernel to compatiable SS framework 
-#if defined(CONFIG_FB_MSM_MDSS_32BIT)
+#if defined(CONFIG_FB_MSM_MDSS_SAMSUNG)
 struct mdp_dither_cfg_data32 {
 	uint32_t version;
 	uint32_t block;
@@ -388,11 +387,9 @@ struct mdss_ad_init32 {
 	uint8_t logo_h;
 	uint32_t alpha;
 	uint32_t alpha_base;
-//+bug603960,sheqihao.wt,add,2020/11/26,add the 32BIT Color in kernel to compatiable SS framework 
-#if defined(CONFIG_FB_MSM_MDSS_32BIT)
+#if defined(CONFIG_FB_MSM_MDSS_SAMSUNG)
 	uint32_t al_thresh;
 #endif
-//-bug603960,sheqihao.wt,add,2020/11/26,add the 32BIT Color in kernel to compatiable SS framework 
 	uint32_t bl_lin_len;
 	uint32_t bl_att_len;
 	compat_caddr_t bl_lin;
