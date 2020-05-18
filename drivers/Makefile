@@ -192,6 +192,9 @@ obj-y				+= debug/
 # CONFIG_SS_VIBRATOR
 obj-y				+= motor/
 
+# Motor
+obj-y				+= motor/
+
 ifeq ($(CONFIG_FB_MSM_MDSS_SAMSUNG),y)
 	LINUXINCLUDE	+=  -I$(srctree)/drivers/video/fbdev/msm/samsung/
 endif
